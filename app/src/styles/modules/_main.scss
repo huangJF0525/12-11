@@ -1,0 +1,212 @@
+.wrapper{
+    position: relative;
+    height: 100%;
+    .gird{
+        width: 100%;
+        height: 100%;
+        display: grid;
+        grid-template-rows:30px 100px 1fr ;
+        grid-template-columns:18% 64% 18% ;
+        
+        .item-1,.item-2,.item-3{
+            background-color: #343434;
+        }
+        .item-2>div{
+            display: flex;
+            justify-content: space-between;
+            span{
+                color:#AAAAAA;
+                margin:0 5px;
+                font-size: 10px;
+            }
+            .header-right{
+                .el-input{
+                    width: 150px;
+                    .el-input__inner{
+                        height: 20px;
+                    }
+                }
+                .el-button{
+                    padding:2px 3px;
+                    margin:0 3px
+                }
+            }
+        }  
+        .item-4 ,.item-6,.item-7,.item-9,.item-5{
+            background-color: #f9f9f9;
+        }
+        .item-5>div {
+            display: flex;
+            justify-content: space-between;
+            height: 100%;
+            .topnav-left,.topnav-right{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+            .topnav-right{
+            .clearfix{
+                >li{
+                    float: left;
+                    width: 60px;
+                    height:40px;
+                    line-height: 40px;
+                    text-align: center;
+                    font-size: 16px;
+                    >a{
+                        display: block;
+                        color: #343434;
+                        background: #f9f9f9;
+                    }                  
+                    >a:hover{ 
+                        text-decoration: none;
+                        background: #343434;
+                        color: #f9f9f9;
+                    }
+                    .subnav{
+                        position: absolute;
+                        display: none;
+                        >li{
+                            width: 60px;
+                            height:40px;
+                            line-height: 40px;
+                            text-align: center;
+                            font-size: 16px; 
+                            >a{
+                                display: block;
+                                color: #343434;
+                                background: #f9f9f9;
+                            }                  
+                            >a:hover{ 
+                                text-decoration: none;
+                                background: #343434;
+                                color: #f9f9f9;
+                            }
+                        }
+                    
+                    }
+
+                }
+                >li:nth-child(2):hover .subnav,>li:nth-child(5):hover .subnav{
+                    display: block;
+                }
+            }
+            }
+        }
+        .item-8 {
+            height: 100%;
+            .content{
+                display: flex;
+                flex-wrap: wrap;
+                >div:nth-child(1){
+                    width: 100%;
+                }
+                >div:nth-child(2){
+                    width: 66%;
+                    margin-right: 2%;
+                }
+                >div:nth-child(3){
+                    width: 32%;
+                }
+            }
+            .home{
+                .swiper{
+                    height: auto;
+                    background: skyblue;
+                    .case-top{
+                        .el-breadcrumb{
+                            background: white;
+                            height: 50px;
+                            line-height: 50px;
+                        }
+    
+                    }
+                }
+                &-left{
+                    .caselist{
+                        color: red;
+                        width: 100%;
+                        margin-left:5px
+                    }
+                    .box-card{
+                        margin:10px 0;
+                        .el-card__header{
+                            padding: 5px 8px;
+                            .clearfix{
+                                >a{
+                                    font-size: 18px;
+                                    font-weight: bolder;
+                                }
+                            }
+                        }
+                        .el-card__body{
+                            padding:0;
+                            .body{
+                                >p{
+                                    margin:10px
+                    
+                                }
+                                >a .el-image{
+                                    float: left;
+                                    margin:0 10px 10px 10px
+                                }
+                            }
+                        }
+                        
+                    }
+                }
+                &-right{
+                    background: sandybrown;
+                }
+            }
+            .case{
+                .case-top{
+                    .el-breadcrumb{
+                        background: white;
+                        height: 50px;
+                        line-height: 50px;
+                    }
+
+                }
+                .case-left{
+                    >p:nth-child(1){
+                        width: 100%;
+                        height: 50px;
+                        line-height: 50px;
+                        font-weight: bolder;
+                        font-size: 20px;
+                    }
+                    >p:nth-child(2){
+                        text-align: center;
+                        color: gray;
+                        >span{
+                            color: red;
+                            margin-left: 5px;
+                        }
+                    }
+                    .container{
+                        >p:nth-child(2){
+                            >img{
+                                width:100%;
+                            }
+                        }
+                    }
+                }
+            }
+            .caselist{
+                .el-breadcrumb{
+                    background: white;
+                    height: 50px;
+                    line-height: 50px;
+                }
+            }
+        }
+        .item-10{
+            background: #000;
+            grid-column-start: 1;
+            grid-column-end: 4;
+            height: 100px;
+            align-content:stretch
+        }
+    }
+}
