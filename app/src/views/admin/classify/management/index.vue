@@ -1,12 +1,14 @@
 <template>
   <div>
-    <el-button type="text" @click="dialogFormVisible = true"
-      >新建分类</el-button
-    >
+    <el-button type="text" @click="add">新建分类</el-button>
 
-    <el-dialog title="新建分类" :visible.sync="dialogFormVisible">
+    <el-dialog
+      :title="title"
+      :visible.sync="dialogFormVisible"
+      :before-close="handleClose"
+    >
       <el-form :model="form">
-        <el-form-item label="ID" :label-width="formLabelWidth">
+        <el-form-item v-if="msg == 1" label="ID" :label-width="formLabelWidth">
           <el-input v-model="form.name1"></el-input>
         </el-form-item>
         <el-form-item label="名称" :label-width="formLabelWidth">
@@ -22,7 +24,7 @@
       </div>
     </el-dialog>
     <el-table :data="columnData" border style="width: 100%">
-      <el-table-column fixed prop="column_id" label="ID" width="120">
+      <el-table-column prop="column_id" label="ID" width="120">
       </el-table-column>
       <el-table-column prop="column_name" label="名称" width="120">
       </el-table-column>
@@ -31,7 +33,10 @@
       <el-table-column label="" width="auto"> </el-table-column>
       <el-table-column fixed="right" label="操作" width="100">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="compile(scope.$index)"
+          <el-button
+            type="text"
+            size="small"
+            @click="compile(scope.$index, columnData)"
             >编辑</el-button
           >
           <el-button type="text" size="small" @click="deletes(scope.$index)"
@@ -44,11 +49,16 @@
 </template>
 
 <script>
+// import { mapState } from "vuex";
 import qs from "qs";
+// import ShowDialog from "./components/ShowDialog.vue";
 export default {
   data() {
     return {
+      title: "",
+      msg: null,
       columnData: [],
+      innerVisible: false,
       dialogFormVisible: false,
       form: {
         name1: "",
@@ -62,9 +72,21 @@ export default {
     this.main();
   },
   components: {},
-  computed: {},
+  computed: {
+    // ...mapState(["dialogFormVisible", "title", "msg"])
+  },
   watch: {},
   methods: {
+    add() {
+      this.title = "新建分类";
+      this.msg = 1;
+      this.dialogFormVisible = true;
+      this.form.name1 = null;
+      this.form.name2 = null;
+      this.form.name3 = null;
+
+      // this.$store.commit("fatherData", true, "新建分类", 1);
+    },
     main() {
       this.$http
         .post("http://127.0.0.1:8088/column")
@@ -83,13 +105,23 @@ export default {
         name: this.form.name2,
         router: this.form.name3
       };
-      this.$http
-        .post("http://127.0.0.1:8088/columnadd", qs.stringify(params))
-        .then(this.main())
-        .catch(function(err) {
-          console.log(err);
-        });
+      if (this.msg == 1) {
+        this.$http
+          .post("http://127.0.0.1:8088/columnadd", qs.stringify(params))
+          .then(this.main())
+          .catch(function(err) {
+            console.log(err);
+          });
+      } else if (this.msg == 2) {
+        this.$http
+          .post("http://127.0.0.1:8088/columncompile", qs.stringify(params))
+          .then(this.main())
+          .catch(function(err) {
+            console.log(err);
+          });
+      }
     },
+
     deletes(id) {
       let params = {
         id: this.columnData[id].column_id
@@ -100,24 +132,25 @@ export default {
         .catch(function(err) {
           console.log(err);
         });
+    },
+    compile(id, data) {
+      this.dialogFormVisible = true;
+      this.title = "编辑分类";
+      this.msg = 2;
+      this.form.name1 = id + 1;
+      this.form.name2 = data[id].column_name;
+      this.form.name3 = data[id].column_to;
+    },
+    throws(val) {
+      this.dialogFormVisible = val;
+    },
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then(() => {
+          done();
+        })
+        .catch(() => {});
     }
-    // compile(id) {
-
-    //   this.dialogFormVisible = true;
-    //   this.form.name1=this.columnData[id].column_id;
-    //   this.form.name2=this.columnData[id].column_
-    //   let params = {
-    //     id: this.form[id].name1,
-    //     name: this.form[id].name2,
-    //     router: this.form[id].name3
-    //   };
-    //   this.$http
-    //     .post("http://127.0.0.1:8088/columncompile", qs.stringify(params))
-    //     .then(this.main())
-    //     .catch(function(err) {
-    //       console.log(err);
-    //     });
-    // }
   }
 };
 </script>

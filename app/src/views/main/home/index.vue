@@ -70,7 +70,13 @@ export default {
   },
   watch: {},
   methods: {
+    cancelRequest() {
+      if (typeof this.source === "function") {
+        this.source("终止请求!");
+      }
+    },
     main() {
+      this.cancelRequest();
       let params = {
         id: this.$route.params.id
       };
@@ -80,8 +86,17 @@ export default {
           this.listData = resp.data;
           console.log(this.listData);
         })
-        .catch(function(err) {
-          console.log(err);
+        .catch(err => {
+          if (err) {
+            if (this.$http.isCancel(err)) {
+              // 终止多次请求 请求取消 返回取消后的信息
+              console.log("请求取消", err.message);
+            } else {
+              // 服务端数据异常
+              console.log("没有搜索到数据哦");
+              this.listData = [];
+            }
+          }
         });
     },
     change(i) {

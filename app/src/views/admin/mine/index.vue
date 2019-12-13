@@ -1,5 +1,5 @@
 <template>
-  <div>1111111</div>
+  <div>这是我的主页</div>
 </template>
 
 <script>

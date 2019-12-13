@@ -2,12 +2,12 @@ const express=require("express");
 const bodyparser=require("body-parser");
 const app =express();
 app.use(bodyparser.urlencoded({extended:false}))
-app.get("/get",(req,resp)=>{
-    resp.end("我是get")
-})
-app.post("/post",(req,resp)=>{
-    resp.json(req.body)
-})
+// app.get("/get",(req,resp)=>{
+//     resp.end("我是get")
+// })
+// app.post("/post",(req,resp)=>{
+//     resp.json(req.body)
+// })
 const mysql      = require('mysql');
 var connection = mysql.createConnection({
   host     : 'localhost',
@@ -30,17 +30,17 @@ app.all("*", function(req, res, next) {
     status: "200",
     message: "success"
   };
-app.post('/list',function(req,res){
+// app.post('/list',function(req,res){
     
-    // 构造sql（查询用户名和密码是否存在）
-    const sqlStr = "select * from list";
-    // 执行sql语句
-    connection.query(sqlStr, (err, result) => {
-      if (err) throw err;
-      // 判断
-      res.json(result);
-    }); 
-})
+//     // 构造sql（查询用户名和密码是否存在）
+//     const sqlStr = "select * from list";
+//     // 执行sql语句
+//     connection.query(sqlStr, (err, result) => {
+//       if (err) throw err;
+//       // 判断
+//       res.json(result);
+//     }); 
+// })
 app.post('/lists',function(req,res){
   let { id } = req.body;
   const sqlStr = `select * from list where show_id = '${id}'`;
@@ -101,15 +101,15 @@ app.post('/columndel',function(req,res){
     console.log(result)
   }); 
 })
-// app.post('/columncompile',function(req,res){
-//   let { id,name,router} = req.body;
-//   const sqlStr =`UPDATE  columns SET column_id="${id}",column_name="${name}",column_to="${router} where column_id="${id}`;
-//   connection.query(sqlStr, (err, result) => {
-//     if (err) throw err;
-//     res.json(result);
-//     console.log(result)
-//   }); 
-// })
+app.post('/columncompile',function(req,res){
+  let { id,name,router} = req.body;
+  const sqlStr =`UPDATE  columns SET column_name="${name}",column_to="${router}" where column_id="${id}"`;
+  connection.query(sqlStr, (err, result) => {
+    if (err) throw err;
+    res.json(result);
+    console.log(result)
+  }); 
+})
 
 
 

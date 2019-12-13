@@ -3,9 +3,7 @@
     <div class="case-top">
       <el-breadcrumb separator="/">
         <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-        <el-breadcrumb-item :to="{ path: '/caselist' }"
-          >案例</el-breadcrumb-item
-        >
+        <el-breadcrumb-item :to="{ path: '/home/4' }">案例</el-breadcrumb-item>
         <el-breadcrumb-item>{{ listData.list_title }}</el-breadcrumb-item>
       </el-breadcrumb>
     </div>
@@ -55,7 +53,13 @@ export default {
   computed: {},
   watch: {},
   methods: {
+    cancelRequest() {
+      if (typeof this.source === "function") {
+        this.source("终止请求!");
+      }
+    },
     get() {
+      this.cancelRequest();
       let params = {
         id: this.list_id
       };
@@ -65,8 +69,17 @@ export default {
           this.listData = resp.data[0];
           console.log(this.listData);
         })
-        .catch(function(err) {
-          console.log(err);
+        .catch(err => {
+          if (err) {
+            if (this.$http.isCancel(err)) {
+              // 终止多次请求 请求取消 返回取消后的信息
+              console.log("请求取消", err.message);
+            } else {
+              // 服务端数据异常
+              console.log("没有搜索到数据哦");
+              this.listData = [];
+            }
+          }
         });
     }
   }
